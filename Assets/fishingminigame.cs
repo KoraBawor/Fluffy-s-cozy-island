@@ -1,11 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class fishingminigame : MonoBehaviour
 {
     [SerializeField] Transform topPivot;
     [SerializeField] Transform bottomPivot;
+
+    [SerializeField] GameObject winScreen;
+    [SerializeField] GameObject loseScreen;
 
     [SerializeField] Transform fish;
 
@@ -93,17 +98,19 @@ public class fishingminigame : MonoBehaviour
 
         hookProgress = Mathf.Clamp(hookProgress, 0f, 1f);
     }
-    
+
     private void Lose()
     {
         pause = true;
-        Debug.Log("YOU LOSE :<");
+        loseScreen.SetActive(true);
+        Time.timeScale = 0f; // zatrzymuje grê
     }
 
     private void Win()
     {
         pause = true;
-        Debug.Log("YOU WIN!");
+        winScreen.SetActive(true);
+        Time.timeScale = 0f;
     }
 
     void Hook()
@@ -143,4 +150,10 @@ public class fishingminigame : MonoBehaviour
         fishPosition = Mathf.SmoothDamp(fishPosition, fishDestination , ref fishSpeed, smoothMotion);
         fish.position = Vector3.Lerp(bottomPivot.position, topPivot.position, fishPosition);
     }
+    public void ExitToMap()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("MainMap");
+    }
+
 }
